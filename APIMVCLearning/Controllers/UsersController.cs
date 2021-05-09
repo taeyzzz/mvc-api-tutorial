@@ -1,28 +1,45 @@
-﻿using System;
-using System.Linq;
-using System.Web.ModelBinding;
-using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Http;
 using APIMVCLearning.Models;
-using APIMVCLearning.Utils.Response;
-using Newtonsoft.Json;
+
 
 namespace APIMVCLearning.Controllers
 {
-    public class UsersController : Controller
+    [Route("api/users")]
+    public class UsersController : ApiController
     {
-        // GET
         [HttpGet]
-        public JsonResult Index()
+        public IHttpActionResult ListUser()
         {
-            return new JsonResponse(new { message = "to do list user" });
+            var users = new List<User>()
+            {
+                new User(){ email = "taeyza@gmail.com", birthday = "1993-12-07"},
+                new User(){ email = "hello@gmail.com" }
+            };
+            return Json(users);
         }
         
-        [HttpPost]
-        public ActionResult Index(User userPayload)
+        [HttpGet]
+        public IHttpActionResult GetUser(int id)
         {
-            if (ModelState.IsValid) return new JsonResponse(userPayload);
-            var listError = ModelState.Values.SelectMany(m => m.Errors).ToList();
-            return new JsonResponse(400, listError);
+            return Json(new User() {email = "taeyza@gmail.com", birthday = "1993-12-07"});
         }
+
+        [HttpPost]
+        public IHttpActionResult CreateUser(User userPayload)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Json(userPayload);
+        }
+
+        [HttpPatch]
+        public IHttpActionResult UpdateUser(User userPayload, int id)
+        {
+            return Json(userPayload);
+        }
+
     }
 }

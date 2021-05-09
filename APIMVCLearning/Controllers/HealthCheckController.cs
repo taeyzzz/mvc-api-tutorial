@@ -1,14 +1,13 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Http;
 
 namespace APIMVCLearning.Controllers
 {
-    public class HealthCheckController : Controller
+    public class HealthCheckController : ApiController
     {
-        // GET
         [HttpGet]
-        public JsonResult Index()
+        public IHttpActionResult  CheckHealthCheck()
         {
-            return Json(new { message = "API is running."}, JsonRequestBehavior.AllowGet);
+            return Json(new {message = "hello"});
         }
     }
 }

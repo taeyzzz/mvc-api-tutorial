@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.AccessControl;
 using System.Web.ModelBinding;
+using Microsoft.Ajax.Utilities;
 
 namespace APIMVCLearning.Models
 {
@@ -15,13 +16,18 @@ namespace APIMVCLearning.Models
         public string telephoneNumber { get; set; }
         public string birthday { get; set; }
 
-        public int age
+        public int? age
         {
             get
             {
-                var todayDate = DateTime.Today;
-                var age = todayDate.Year - DateTime.Parse(birthday).Year ;
-                return age;
+                int? prepareAge = null;
+                if (!birthday.IsNullOrWhiteSpace())
+                {
+                    var todayDate = DateTime.Today;
+                    prepareAge = todayDate.Year - DateTime.Parse(birthday).Year ;
+                }
+
+                return prepareAge;
             }
         }
 
