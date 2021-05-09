@@ -124,7 +124,6 @@
         </Compile>
         <Compile Include="Models\User.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="RequestPayload\UserPayload.cs" />
         <Compile Include="Utils\Response\JsonResponse.cs" />
     </ItemGroup>
     <ItemGroup>
@@ -167,6 +166,7 @@
     <ItemGroup>
         <Folder Include="App_Data" />
         <Folder Include="Attributes" />
+        <Folder Include="RequestPayload" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="fonts\glyphicons-halflings-regular.woff2" />
