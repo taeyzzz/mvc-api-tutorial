@@ -2,6 +2,7 @@
 using System.Web.Http;
 using APIMVCLearning.Attributes;
 using APIMVCLearning.Models;
+using APIMVCLearning.Repositories;
 
 
 namespace APIMVCLearning.Controllers
@@ -10,17 +11,17 @@ namespace APIMVCLearning.Controllers
     [Route("api/users")]
     public class UsersController : ApiController
     {
-        public static List<User> listUser = new List<User>();
+        public static UserRepository userRepo = new UserRepository();
         [HttpGet]
         public IHttpActionResult ListUser()
         {
-            return Json(listUser);
+            return Json(userRepo.getAllUsers());
         }
         
         [HttpGet]
         public IHttpActionResult GetUser(int id)
         {
-            return Json(new User() {email = "taeyza@gmail.com", birthday = "1993-12-07"});
+            return Json(userRepo.getUserById(id.ToString()));
         }
 
         [HttpPost]
@@ -30,8 +31,9 @@ namespace APIMVCLearning.Controllers
             {
                 return BadRequest(ModelState);
             }
-            listUser.Add(userPayload);
-            return Json(userPayload);
+
+            var newUser = userRepo.addUser(userPayload);
+            return Json(newUser);
         }
 
         [HttpPatch]

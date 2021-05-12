@@ -10,9 +10,9 @@ using APIMVCLearning.Utils;
 
 namespace APIMVCLearning.Attributes
 {
-    public class AuthenticationFilterAttribute: ActionFilterAttribute
+    public class AuthenticationFilterAttribute: AuthorizationFilterAttribute
     {
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        public override void OnAuthorization(HttpActionContext actionContext)
         {
             CookieHeaderValue cookie = actionContext.Request.Headers.GetCookies("user-token").FirstOrDefault();
             try
