@@ -2,15 +2,31 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
+using System.Web.Mvc;
+using APIMVCLearning.Models;
 
 namespace APIMVCLearning.Attributes
 {
-    public class ErrorHandlerAttribute: ExceptionFilterAttribute  
+    public class ErrorHandlerAttribute: ExceptionFilterAttribute
     {
-        
+         private const string UNAUTHORIZED = "Unauthorized";
         public override void OnException(HttpActionExecutedContext actionExecutedContext)  
         {  
             // TODO error handler preparation.
+            var response = new HttpResponseMessage();
+            switch (actionExecutedContext.Exception.Message)
+            {
+                case UNAUTHORIZED:
+                {
+                    response.StatusCode = HttpStatusCode.Unauthorized;
+                    break;
+                }
+                default:
+                {
+                    response.StatusCode = HttpStatusCode.InternalServerError;
+                    break;
+                }
+            }
             string exceptionMessage = string.Empty;  
             if (actionExecutedContext.Exception.InnerException == null)  
             {  
@@ -20,12 +36,9 @@ namespace APIMVCLearning.Attributes
             {  
                 exceptionMessage = actionExecutedContext.Exception.InnerException.Message;  
             }
-            //We can log this exception message to the file or database.  
-            var response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
-            {  
-                Content = new StringContent("An unhandled exception was thrown by service."),  
-                ReasonPhrase = "Internal Server Error.Please Contact your Administrator."  
-            };  
+
+            response.Content = new StringContent(exceptionMessage); 
+  
             actionExecutedContext.Response = response;
         }
     }

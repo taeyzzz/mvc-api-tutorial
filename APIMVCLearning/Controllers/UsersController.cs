@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -27,7 +28,7 @@ namespace APIMVCLearning.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult CreateUser(User userPayload)
+        public IHttpActionResult CreateUser([FromBody]User userPayload, [FromUri]bool save)
         {
             if (!ModelState.IsValid)
             {
@@ -39,7 +40,7 @@ namespace APIMVCLearning.Controllers
         }
 
         [HttpPatch]
-        public IHttpActionResult UpdateUser(User userPayload, int id)
+        public IHttpActionResult UpdateUser([FromBody]User userPayload, [FromUri]int id)
         {
             return Json(userPayload);
         }
