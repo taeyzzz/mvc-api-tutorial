@@ -10,7 +10,7 @@ using APIMVCLearning.Repositories;
 namespace APIMVCLearning.Controllers
 {
     [AuthenticationFilter]
-    [Route("api/users")]
+    [RoutePrefix("api/users")]
     public class UsersController : ApiController
     {
         public static UserRepository userRepo = new UserRepository();

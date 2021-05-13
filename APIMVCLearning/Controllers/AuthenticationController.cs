@@ -7,7 +7,7 @@ using APIMVCLearning.Utils;
 
 namespace APIMVCLearning.Controllers
 {
-    [Route("api/authentication")]
+    [RoutePrefix("api/authentication")]
     public class AuthenticationController : ApiController
     {
         private UserRepository _userRepository;
@@ -31,7 +31,7 @@ namespace APIMVCLearning.Controllers
                 return Unauthorized();
             }
             var cookie = new HttpCookie("user-token", new JWTServices().generateJWTToken(adminUser));
-            cookie.Expires = DateTime.Now.AddDays(2);  
+            cookie.Expires = DateTime.Now.AddHours(1);  
             cookie.Domain = Request.RequestUri.Host;  
             cookie.Path = "/";
             cookie.HttpOnly = true;

@@ -144,7 +144,9 @@
         <Compile Include="App_Start\BundleConfig.cs" />
         <Compile Include="App_Start\FilterConfig.cs" />
         <Compile Include="App_Start\RouteConfig.cs" />
+        <Compile Include="App_Start\WebApiConfig.cs" />
         <Compile Include="Attributes\AuthenticationFilterAttribute.cs" />
+        <Compile Include="Attributes\ErrorHandlerAttribute.cs" />
         <Compile Include="Controllers\AuthenticationController.cs" />
         <Compile Include="Controllers\HealthCheckController.cs" />
         <Compile Include="Controllers\HomeController.cs" />

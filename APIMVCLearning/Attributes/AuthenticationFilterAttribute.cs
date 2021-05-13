@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http.Controllers;
@@ -21,27 +20,20 @@ namespace APIMVCLearning.Attributes
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
             CookieHeaderValue cookie = actionContext.Request.Headers.GetCookies("user-token").FirstOrDefault();
-            try
+            if (cookie == null)
             {
-                if (cookie == null)
+                throw new Exception("Unauthorized");
+            }
+            else
+            {
+                var token = cookie["user-token"].Value;
+                var email = (string)new JWTServices().verifyJWTToken(token);
+                var adminUser = _userRepository.getAdminUser();
+                if (email != adminUser.email)
                 {
                     throw new Exception("Unauthorized");
                 }
-                else
-                {
-                    var token = cookie["user-token"].Value;
-                    var email = (string)new JWTServices().verifyJWTToken(token);
-                    var adminUser = _userRepository.getAdminUser();
-                    if (email != adminUser.email)
-                    {
-                        throw new Exception("Unauthorized");
-                    }
-                    // TODO store current user to context
-                }
-            }
-            catch (Exception e)
-            {
-                actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                // TODO store current user to context
             }
         }
     }
