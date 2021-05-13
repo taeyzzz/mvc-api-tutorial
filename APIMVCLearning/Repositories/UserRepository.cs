@@ -5,9 +5,9 @@ namespace APIMVCLearning.Repositories
 {
     public class UserRepository
     {
-        private readonly User _adminUser = new User()
+        private readonly User _adminUser = new User
         {
-            id = "1",
+            id = 1,
             email = "taeyzao@gmail.com",
             firstName = "taey",
             lastName = "kultontikorn",
@@ -15,7 +15,8 @@ namespace APIMVCLearning.Repositories
             birthday = "1995/12/07"
         };
 
-        private List<User> listUser = new List<User>();
+        private readonly List<User> listUser = new List<User>();
+
         public UserRepository()
         {
             listUser.Add(_adminUser);
@@ -28,9 +29,9 @@ namespace APIMVCLearning.Repositories
 
         public User addUser(User newUser)
         {
-            var preparedNewUser = new User()
+            var preparedNewUser = new User
             {
-                id = (listUser.Count + 1).ToString(),
+                id = listUser.Count + 1,
                 email = newUser.email,
                 firstName = newUser.firstName,
                 lastName = newUser.lastName,
@@ -41,7 +42,7 @@ namespace APIMVCLearning.Repositories
             return preparedNewUser;
         }
 
-        public User getUserById(string id)
+        public User getUserById(int id)
         {
             var targetUser = listUser.Find(u => u.id == id);
             return targetUser;

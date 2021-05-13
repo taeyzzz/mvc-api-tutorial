@@ -10,7 +10,7 @@ namespace APIMVCLearning.Utils
     public class JWTServices
     {
         private readonly string SECRET_KEY = "this is my super secret key";
-        private JwtSecurityTokenHandler tokenHandler;
+        private readonly JwtSecurityTokenHandler tokenHandler;
 
         public JWTServices()
         {
@@ -21,18 +21,19 @@ namespace APIMVCLearning.Utils
         {
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("email", userData.email) }),
+                Subject = new ClaimsIdentity(new[] {new Claim("email", userData.email)}),
                 Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SECRET_KEY)), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials =
+                    new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SECRET_KEY)),
+                        SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-
         }
 
         public object verifyJWTToken(string token)
         {
-            var data =tokenHandler.ReadJwtToken(token).Payload;
+            var data = tokenHandler.ReadJwtToken(token).Payload;
             var email = data["email"];
             return email;
         }

@@ -6,7 +6,7 @@ namespace APIMVCLearning.Controllers
     {
         [HttpGet]
         [Route("api/healthcheck")]
-        public IHttpActionResult  CheckHealthCheck()
+        public IHttpActionResult CheckHealthCheck()
         {
             return Json(new {message = "hello"});
         }

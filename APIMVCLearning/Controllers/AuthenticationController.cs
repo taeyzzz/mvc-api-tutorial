@@ -10,29 +10,24 @@ namespace APIMVCLearning.Controllers
     [RoutePrefix("api/authentication")]
     public class AuthenticationController : ApiController
     {
-        private UserRepository _userRepository;
+        private readonly UserRepository _userRepository;
+
         public AuthenticationController()
         {
             _userRepository = new UserRepository();
         }
-         
+
         [HttpPost]
         [Route("login")]
-        public IHttpActionResult  Login(LoginPayload bodyPayload)
+        public IHttpActionResult Login(LoginPayload bodyPayload)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var adminUser = _userRepository.getAdminUser();
-            if (bodyPayload.email != adminUser.email)
-            {
-                return Unauthorized();
-            }
+            if (bodyPayload.email != adminUser.email) return Unauthorized();
             var cookie = new HttpCookie("user-token", new JWTServices().generateJWTToken(adminUser));
-            cookie.Expires = DateTime.Now.AddHours(1);  
-            cookie.Domain = Request.RequestUri.Host;  
+            cookie.Expires = DateTime.Now.AddHours(1);
+            cookie.Domain = Request.RequestUri.Host;
             cookie.Path = "/";
             cookie.HttpOnly = true;
             HttpContext.Current.Response.SetCookie(cookie);
@@ -44,9 +39,7 @@ namespace APIMVCLearning.Controllers
         public IHttpActionResult Logout()
         {
             if (HttpContext.Current.Response.Cookies["user-token"] != null)
-            {
-                HttpContext.Current.Response.Cookies["user-token"].Expires = DateTime.Now.AddDays(-1);   
-            }
+                HttpContext.Current.Response.Cookies["user-token"].Expires = DateTime.Now.AddDays(-1);
             return Json(new {message = "logout success"});
         }
     }
