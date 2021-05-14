@@ -14,7 +14,7 @@ namespace APIMVCLearning.Controllers
         [HttpGet]
         public IHttpActionResult ListUser()
         {
-            return Json(userRepo.getAllUsers());
+            return Json(userRepo.listUsers());
         }
 
         [HttpGet]
@@ -24,11 +24,11 @@ namespace APIMVCLearning.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult CreateUser([FromBody] User userPayload, [FromUri] bool save)
+        public IHttpActionResult CreateUser([FromBody] User userPayload)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var newUser = userRepo.addUser(userPayload);
+            var newUser = userRepo.createUser(userPayload);
             return Json(newUser);
         }
 

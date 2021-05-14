@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using APIMVCLearning.DBContext;
 using APIMVCLearning.Models;
 
 namespace APIMVCLearning.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
+        private UserContext _context; 
         private readonly User _adminUser = new User
         {
             id = 1,
@@ -15,42 +18,53 @@ namespace APIMVCLearning.Repositories
             birthday = "1995/12/07"
         };
 
-        private readonly List<User> listUser = new List<User>();
-
         public UserRepository()
         {
-            listUser.Add(_adminUser);
+            _context = new UserContext();
         }
 
-        public IEnumerable<User> getAllUsers()
+        public IEnumerable<User> listUsers()
         {
-            return listUser;
-        }
-
-        public User addUser(User newUser)
-        {
-            var preparedNewUser = new User
-            {
-                id = listUser.Count + 1,
-                email = newUser.email,
-                firstName = newUser.firstName,
-                lastName = newUser.lastName,
-                telephoneNumber = newUser.telephoneNumber,
-                birthday = newUser.birthday
-            };
-            listUser.Add(preparedNewUser);
-            return preparedNewUser;
+            var listUsers = _context.Users.ToList();
+            return listUsers;
         }
 
         public User getUserById(int id)
         {
-            var targetUser = listUser.Find(u => u.id == id);
+            var targetUser = _context.Users.Find(id);
             return targetUser;
+        }
+
+        public User createUser(User user)
+        {
+            var preparedNewUser = new User
+            {
+                email = user.email,
+                firstName = user.firstName,
+                lastName = user.lastName,
+                telephoneNumber = user.telephoneNumber,
+                birthday = user.birthday
+            };
+            var createdUser = _context.Users.Add(preparedNewUser);
+            _context.SaveChanges();
+            return createdUser;
+        }
+
+        public void deleteUser(int id)
+        {
+            User user = _context.Users.Find(id);
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+        }
+
+        public void updateUser(int id, User user)
+        {
+            throw new System.NotImplementedException();
         }
 
         public User getAdminUser()
         {
-            var adminUser = listUser.Find(u => u.email == "taeyzao@gmail.com");
+            var adminUser = _context.Users.FirstOrDefault(u => u.email == "taeyzao@gmail.com");
             return adminUser;
         }
     }

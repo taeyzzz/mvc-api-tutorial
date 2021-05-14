@@ -251,6 +251,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="RequestPayload\Authentication\LoginPayload.cs" />
     <Compile Include="Utils\JWTServices.cs" />
